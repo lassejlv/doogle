@@ -45,6 +45,12 @@ export default function SearchField() {
       case 'brave':
         searchEngineUrl = 'https://search.brave.com/search?q=';
         break;
+      case 'yahoo':
+        searchEngineUrl = 'https://search.yahoo.com/search?p=';
+        break;
+      case 'wikipedia':
+        searchEngineUrl = 'https://en.wikipedia.org/wiki/Special:Search?search=';
+        break;
       default:
         searchEngineUrl = 'https://www.google.com/search?q=';
     }

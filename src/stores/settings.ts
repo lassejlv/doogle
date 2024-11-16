@@ -1,6 +1,6 @@
 import { atom } from 'jotai';
 
-export const searchEngines = ['google', 'duckduckgo', 'bing', 'brave'];
+export const searchEngines = ['google', 'duckduckgo', 'bing', 'brave', 'yahoo', 'wikipedia'];
 
 interface Settings {
   searchEngine: string;
