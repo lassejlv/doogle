@@ -7,3 +7,4 @@ interface Settings {
 }
 
 export const settingsStore = atom<Settings>({ searchEngine: 'google' });
+export const showSettingsModal = atom<boolean>(false);

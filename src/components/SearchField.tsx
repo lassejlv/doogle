@@ -22,7 +22,6 @@ export default function SearchField() {
   const submit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    e.preventDefault();
 
     const formData = new FormData(e.target as HTMLFormElement);
     const searchTerm = formData.get('search') as string;

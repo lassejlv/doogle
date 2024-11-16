@@ -5,18 +5,18 @@
 @tailwind utilities;
 
 body {
-  font-family: 'Poppins', sans-serif;
-  @apply bg-zinc-950 text-white;
+    font-family: 'Poppins', sans-serif;
+    @apply bg-zinc-950 text-white;
 }
 
 input {
-  @apply w-full rounded-md border border-zinc-800 outline-none bg-zinc-800 px-4 py-2 text-zinc-300;
+    @apply w-full rounded-md border border-zinc-800 outline-none bg-zinc-800 px-4 py-2 text-zinc-300;
 }
 
 select {
-  @apply w-full rounded-md bg-zinc-950 text-zinc-400 text-sm;
+    @apply w-full rounded-md bg-zinc-950 text-zinc-400 text-sm;
 }
 
 .error {
-  @apply text-red-500 text-sm my-3;
+    @apply text-red-500 text-sm my-3;
 }
