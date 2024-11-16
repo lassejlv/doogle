@@ -52,7 +52,7 @@ export default function SearchField() {
         searchEngineUrl = 'https://en.wikipedia.org/wiki/Special:Search?search=';
         break;
       case 'privacywall':
-        searchEngineUrl = 'https://www.privacywall.org/search/secure?q';
+        searchEngineUrl = 'https://www.privacywall.org/search/secure?q=';
         break;
       default:
         searchEngineUrl = 'https://www.google.com/search?q=';
