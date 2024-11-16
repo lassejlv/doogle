@@ -1,0 +1,83 @@
+import { searchEngines, settingsStore } from '@/stores/settings';
+import { useAtom } from 'jotai';
+import { useEffect, useState } from 'react';
+
+export default function SearchField() {
+  const [error, setError] = useState<string | null>(null);
+  const [settings, setSettings] = useAtom(settingsStore);
+
+  useEffect(() => {
+    let searchEngineToSet = localStorage.getItem('searchEngine') as string;
+
+    if (!searchEngineToSet) {
+      searchEngineToSet = 'google';
+      localStorage.setItem('searchEngine', searchEngineToSet);
+    } else {
+      searchEngineToSet = searchEngineToSet;
+    }
+
+    setSettings({ searchEngine: searchEngineToSet });
+  }, [window]);
+
+  const submit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    e.preventDefault();
+
+    const formData = new FormData(e.target as HTMLFormElement);
+    const searchTerm = formData.get('search') as string;
+    if (!searchTerm) return setError('Please enter a search term');
+
+    setError(null);
+
+    let searchEngineUrl;
+
+    switch (settings.searchEngine) {
+      case 'google':
+        searchEngineUrl = 'https://www.google.com/search?q=';
+        break;
+      case 'duckduckgo':
+        searchEngineUrl = 'https://duckduckgo.com/?q=';
+        break;
+      case 'bing':
+        searchEngineUrl = 'https://www.bing.com/search?q=';
+        break;
+      case 'brave':
+        searchEngineUrl = 'https://search.brave.com/search?q=';
+        break;
+      default:
+        searchEngineUrl = 'https://www.google.com/search?q=';
+    }
+
+    window.open(searchEngineUrl + searchTerm, '_blank');
+    console.log(`opening ${searchTerm}`);
+    return;
+  };
+
+  return (
+    <form className='mt-10 flex flex-col items-center justify-center gap-x-6' onSubmit={submit}>
+      <input type='text' placeholder={`Search on ${settings.searchEngine}... 🔍`} name='search' />
+
+      <select
+        className='my-3'
+        onChange={(e) => {
+          localStorage.setItem('searchEngine', e.target.value);
+          setSettings({ ...settings, searchEngine: e.target.value as any });
+        }}
+      >
+        <option value={settings.searchEngine}>{settings.searchEngine}</option>
+        {searchEngines
+          .filter((engine) => engine !== settings.searchEngine)
+          .map((engine) => {
+            return (
+              <option key={engine} value={engine}>
+                {engine}
+              </option>
+            );
+          })}
+      </select>
+
+      {error && <p className='error'>{error}</p>}
+    </form>
+  );
+}

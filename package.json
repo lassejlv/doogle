@@ -1,15 +1,24 @@
 {
-  "name": "search-homepage",
   "scripts": {
-    "dev": "bunx concurrently -n tailwind,server -c green,blue \"bun dev:tailwind\" \"bun dev:server\"",
-    "dev:server": "vite --port 3000",
-    "dev:tailwind": "bunx tailwind -i ./src/index.css -o ./src/index.generated.css --watch",
+    "dev": "bunx --bun vite --port 3000",
     "build": "vite build",
     "preview": "vite preview",
     "deploy": "bun run build && bunx netlify-cli deploy --prod --dir=dist"
   },
-  "devDependencies": {
-    "tailwindcss": "^3.4.15",
+  "dependencies": {
+    "@vitejs/plugin-react": "^4.3.3",
+    "jotai": "^2.10.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "vite": "^5.4.11"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.15",
+    "typescript": "^5.6.3"
   }
 }
