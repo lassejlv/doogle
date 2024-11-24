@@ -1,6 +1,7 @@
 import { searchEngines, settingsStore } from '@/stores/settings';
 import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
+import { Input } from './ui/input';
 
 export default function SearchField() {
   const [error, setError] = useState<string | null>(null);
@@ -9,6 +10,8 @@ export default function SearchField() {
   useEffect(() => {
     let searchEngineToSet = localStorage.getItem('searchEngine') as string;
 
+
+
     if (!searchEngineToSet) {
       searchEngineToSet = 'google';
       localStorage.setItem('searchEngine', searchEngineToSet);
@@ -16,12 +19,12 @@ export default function SearchField() {
       searchEngineToSet = searchEngineToSet;
     }
 
+
     setSettings({ searchEngine: searchEngineToSet });
   }, [window]);
 
   const submit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
+    e.preventDefault()
 
     const formData = new FormData(e.target as HTMLFormElement);
     const searchTerm = formData.get('search') as string;
@@ -64,26 +67,7 @@ export default function SearchField() {
 
   return (
     <form className='mt-10 flex flex-col items-center justify-center gap-x-6' onSubmit={submit}>
-      <input type='text' placeholder={`Search on ${settings.searchEngine}... 🔍`} name='search' />
-
-      <select
-        className='my-3'
-        onChange={(e) => {
-          localStorage.setItem('searchEngine', e.target.value);
-          setSettings({ ...settings, searchEngine: e.target.value as any });
-        }}
-      >
-        <option value={settings.searchEngine}>{settings.searchEngine}</option>
-        {searchEngines
-          .filter((engine) => engine !== settings.searchEngine)
-          .map((engine) => {
-            return (
-              <option key={engine} value={engine}>
-                {engine}
-              </option>
-            );
-          })}
-      </select>
+      <Input type='text' placeholder={`Search on ${settings.searchEngine}... 🔍`} name='search' />
 
       {error && <p className='error'>{error}</p>}
     </form>

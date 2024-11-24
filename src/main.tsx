@@ -1,9 +1,9 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './app';
-import './global.css';
 import SettingFooterIcon from './components/SettingFooterIcon';
-import SettingModal from './components/SettingModal';
+import { Toaster } from './components/ui/toaster';
+import './global.css';
 
 const rootElement = document.getElementById('app');
 
@@ -11,7 +11,7 @@ if (rootElement) {
   ReactDOM.createRoot(rootElement).render(
     <React.StrictMode>
       <App />
-      <SettingModal />
+      <Toaster />
       <SettingFooterIcon />
     </React.StrictMode>
   );
