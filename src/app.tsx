@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import SearchField from './components/SearchField';
 import { useAtom } from 'jotai';
 import { Bookmark, bookmarksStore } from './stores/bookmark';
@@ -7,12 +7,16 @@ import { Plus } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './components/ui/tooltip';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from './components/ui/dialog';
 import { Input } from './components/ui/input';
-import { Label } from './components/ui/label';
 import { Switch } from './components/ui/switch';
 import { useToast } from './hooks/use-toast';
 
+// @ts-ignore: No types for this package
+import IconPicker, { IconPickerItem } from 'react-icons-picker'
+import { Label } from './components/ui/label';
+
 export default function App() {
   const [bookmarks, setBookmarks] = useAtom(bookmarksStore)
+  const [icon, setIcon] = useState('');
   const { toast } = useToast();
 
   useEffect(() => {
@@ -35,23 +39,18 @@ export default function App() {
 
     const formData = new FormData(e.currentTarget)
     const label = formData.get('label') as string
-    const iconUrl = formData.get('iconUrl') as string
     const url = formData.get('url') as string
     const blank = formData.get('blank') as string
 
-    console.table({ label, iconUrl, url, blank })
+    console.table({ label, url, blank })
 
-    if (!label || !iconUrl || !url) {
-      return toast({
-        title: "Error!",
-        description: "Please fill out all the fields",
-        variant: "destructive"
-      })
+    if (!label || !url) {
+      return;
     } else {
 
       const newBookmark = {
         label,
-        icon: iconUrl,
+        icon,
         url,
         blank: blank === 'on'
       }
@@ -76,7 +75,7 @@ export default function App() {
         </div>
         <SearchField />
 
-        <div className='grid grid-cols-10 gap-5 my-3'>
+        <div className='flex gap-2'>
           <Dialog>
             <DialogTrigger asChild>
               <Button variant="outline">
@@ -91,7 +90,12 @@ export default function App() {
 
               <form className='flex flex-col gap-5' onSubmit={addBookmark}>
                 <Input name="label" placeholder='Enter a title for your bookmark' />
-                <Input name="iconUrl" placeholder='Enter an icon url for your bookmark' />
+
+                <div className="flex flex-col gap-5">
+                  <Label htmlFor="icon">Icon</Label>
+                  <IconPicker value={icon} onChange={(v: string) => setIcon(v)} />
+                </div>
+
                 <Input name="url" placeholder='Enter an url for your bookmark' />
 
                 <div className='flex gap-3'>
@@ -109,13 +113,9 @@ export default function App() {
             <a key={index} href={bm.url} target={`${bm.blank ? "_blank" : "current"}`}>
               <TooltipProvider>
                 <Tooltip>
-                  <TooltipTrigger asChild>
+                  <TooltipTrigger>
                     <Button variant="outline">
-                      <img
-                        src={bm.icon}
-                        className='w-8 h-8'
-                        loading='lazy'
-                      />
+                      <IconPickerItem value={bm.icon} size={40} />
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent>
