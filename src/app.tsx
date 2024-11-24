@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import SearchField from './components/SearchField';
 import { useAtom } from 'jotai';
-import { Bookmark, bookmarksStore } from './stores/bookmark';
+import { Bookmark, bookmarksStore, generateId } from './stores/bookmark';
 import { Button } from './components/ui/button';
 import { Plus } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './components/ui/tooltip';
@@ -49,6 +49,7 @@ export default function App() {
     } else {
 
       const newBookmark = {
+        id: generateId(),
         label,
         icon,
         url,

@@ -25,7 +25,9 @@
     "react-icons-picker": "^1.0.9",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
-    "vite": "^5.4.11"
+    "uuid": "^11.0.3",
+    "vite": "^5.4.11",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",
