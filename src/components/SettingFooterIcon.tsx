@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { useToast } from '@/hooks/use-toast';
 import { bookmarksStore } from '@/stores/bookmark';
 import { z } from "zod";
+import { ScrollArea } from './ui/scroll-area';
 
 const importDataSchema = z.object({
   settings: z.object({
@@ -131,16 +132,18 @@ export default function SettingFooterIcon() {
           <div className='my-3'>
             <Label htmlFor='bookmarks'>Bookmarks</Label>
 
-            <ul className='flex flex-col gap-3'>
-              {bookmarks?.map((bookmark) => {
-                return (
-                  <li key={bookmark.id} className='flex items-center justify-between gap-x-2'>
-                    <span>{bookmark.label}</span>
-                    <Button variant='destructive' onClick={() => removeBookmark(bookmark.id)}><Trash /></Button>
-                  </li>
-                )
-              })}
-            </ul>
+            <ScrollArea className="h-72 w-full">
+              <ul className='flex flex-col gap-3'>
+                {bookmarks?.map((bookmark) => {
+                  return (
+                    <li key={bookmark.id} className='flex items-center justify-between gap-x-2'>
+                      <span>{bookmark.label}</span>
+                      <Button variant='destructive' onClick={() => removeBookmark(bookmark.id)}><Trash /></Button>
+                    </li>
+                  )
+                })}
+              </ul>
+            </ScrollArea>
           </div>
 
           <div className='my-3'>
