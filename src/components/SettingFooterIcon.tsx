@@ -22,6 +22,8 @@ export default function SettingFooterIcon() {
   const [bookmarks, setBookmars] = useAtom(bookmarksStore)
   const { toast } = useToast();
 
+
+
   const removeBookmark = (id: string) => {
     if (!bookmarks) return;
     const confirmed = confirm("Sure you wanna delete it ? ")

@@ -19,6 +19,17 @@ export default function App() {
   const [icon, setIcon] = useState('');
   const { toast } = useToast();
 
+  const clickEscButton = () => {
+    const escEvent = new KeyboardEvent("keydown", {
+      key: "Escape",
+      code: "Escape",
+      keyCode: 27,
+      bubbles: true,
+    })
+
+    document.dispatchEvent(escEvent)
+  }
+
   useEffect(() => {
 
 
@@ -64,6 +75,8 @@ export default function App() {
         title: "Success!",
         description: "Bookmark added successfully",
       })
+
+      clickEscButton();
 
     }
   }
