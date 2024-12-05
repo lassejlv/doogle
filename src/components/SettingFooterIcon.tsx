@@ -7,50 +7,47 @@ import { searchEngines, settingsStore } from '@/stores/settings';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { useToast } from '@/hooks/use-toast';
 import { bookmarksStore } from '@/stores/bookmark';
-import { z } from "zod";
+import { z } from 'zod';
 import { ScrollArea } from './ui/scroll-area';
+import LoginModal from './LoginModal';
 
 const importDataSchema = z.object({
   settings: z.object({
-    searchEngine: z.string()
+    searchEngine: z.string(),
   }),
-  bookmarks: z.any()
-})
+  bookmarks: z.any(),
+});
 
 export default function SettingFooterIcon() {
   const [settings, setSettings] = useAtom(settingsStore);
-  const [bookmarks, setBookmars] = useAtom(bookmarksStore)
+  const [bookmarks, setBookmars] = useAtom(bookmarksStore);
   const { toast } = useToast();
-
-
 
   const removeBookmark = (id: string) => {
     if (!bookmarks) return;
-    const confirmed = confirm("Sure you wanna delete it ? ")
+    const confirmed = confirm('Sure you wanna delete it ? ');
     if (!confirmed) return toast({ title: '✅ Cancelled', description: 'Bookmark deletion cancelled' });
 
     const updatedArray = bookmarks.filter((bookmark) => bookmark.id !== id);
     localStorage.setItem('bookmarks', JSON.stringify(updatedArray));
     setBookmars(updatedArray);
-  }
+  };
 
   const exportData = () => {
-
     const data = {
       settings: settings,
-      bookmarks: bookmarks
-    }
+      bookmarks: bookmarks,
+    };
 
-    navigator.clipboard.writeText(JSON.stringify(data))
+    navigator.clipboard.writeText(JSON.stringify(data));
     toast({
       title: '✅ Data Copied',
-      description: 'Data copied to clipboard, go to an other device/browser and click the import button to import the data.'
-    })
-  }
+      description: 'Data copied to clipboard, go to an other device/browser and click the import button to import the data.',
+    });
+  };
 
   const importData = (importedData: any) => {
-
-    const { data, success } = importDataSchema.safeParse(importedData)
+    const { data, success } = importDataSchema.safeParse(importedData);
     if (!success) return toast({ title: '❌ Invalid Data', description: 'Data is invalid, please check the data and try again' });
 
     // First set the settings settings
@@ -60,36 +57,35 @@ export default function SettingFooterIcon() {
     setBookmars(data.bookmarks || []);
     localStorage.setItem('bookmarks', JSON.stringify(data.bookmarks || []));
 
-
     toast({
       title: '✅ Data Imported',
-      description: 'Data imported successfully'
-    })
-  }
+      description: 'Data imported successfully',
+    });
+  };
 
   const deleteData = () => {
-    const confirmed = confirm("Are you sure you wanna delete all data ?")
+    const confirmed = confirm('Are you sure you wanna delete all data ?');
     if (!confirmed) return toast({ title: '✅ Cancelled', description: 'Data deletion cancelled' });
 
     localStorage.clear();
     setSettings({ searchEngine: 'google' });
-    setBookmars([])
+    setBookmars([]);
 
     toast({
       title: '✅ Data Deleted',
-      description: 'All data has been deleted'
-    })
-  }
+      description: 'All data has been deleted',
+    });
+  };
 
   return (
     <footer className='fixed bottom-0 left-0 right-0 flex items-center justify-end gap-x-6 p-4 '>
       <Dialog>
         <DialogTrigger>
-          <Button variant="ghost">
+          <Button variant='ghost'>
             <Settings2 />
           </Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className='sm:max-w-[425px]'>
           <DialogHeader>
             <DialogTitle>Settings</DialogTitle>
             <DialogDescription>
@@ -97,18 +93,19 @@ export default function SettingFooterIcon() {
             </DialogDescription>
           </DialogHeader>
 
-
           <div className='my-3'>
             <Label htmlFor='searchEngine'>Search Engine</Label>
 
-            <Select onValueChange={(val) => {
-              localStorage.setItem('searchEngine', val);
-              setSettings({ ...settings, searchEngine: val });
-              toast({
-                title: "Saved!",
-                description: `Updated search engine to: ${val}`
-              })
-            }}>
+            <Select
+              onValueChange={(val) => {
+                localStorage.setItem('searchEngine', val);
+                setSettings({ ...settings, searchEngine: val });
+                toast({
+                  title: 'Saved!',
+                  description: `Updated search engine to: ${val}`,
+                });
+              }}
+            >
               <SelectTrigger>
                 <SelectValue placeholder={`${settings.searchEngine ? settings.searchEngine : 'Select a search engine'}`} />
               </SelectTrigger>
@@ -120,11 +117,7 @@ export default function SettingFooterIcon() {
                   {searchEngines
                     .filter((engine) => engine !== settings.searchEngine)
                     .map((engine) => {
-                      return (
-                        <SelectItem value={engine}>
-                          {engine}
-                        </SelectItem>
-                      );
+                      return <SelectItem value={engine}>{engine}</SelectItem>;
                     })}
                 </SelectGroup>
               </SelectContent>
@@ -134,15 +127,17 @@ export default function SettingFooterIcon() {
           <div className='my-3'>
             <Label htmlFor='bookmarks'>Bookmarks</Label>
 
-            <ScrollArea className="h-72 w-full">
+            <ScrollArea className='h-72 w-full'>
               <ul className='flex flex-col gap-3'>
                 {bookmarks?.map((bookmark) => {
                   return (
                     <li key={bookmark.id} className='flex items-center justify-between gap-x-2'>
                       <span>{bookmark.label}</span>
-                      <Button variant='destructive' onClick={() => removeBookmark(bookmark.id)}><Trash /></Button>
+                      <Button variant='destructive' onClick={() => removeBookmark(bookmark.id)}>
+                        <Trash />
+                      </Button>
                     </li>
-                  )
+                  );
                 })}
               </ul>
             </ScrollArea>
@@ -151,30 +146,36 @@ export default function SettingFooterIcon() {
           <div className='my-3'>
             <Label htmlFor='exportImportData'>Import / Export Data</Label>
 
-            <div className="flex gap-2 my-3">
-              <Button size="sm" onClick={() => exportData()}>
-                <FolderInput />  Export
+            <div className='flex gap-2 my-3'>
+              <Button size='sm' onClick={() => exportData()}>
+                <FolderInput /> Export
               </Button>
 
-              <Button size="sm" variant="secondary" onClick={() => {
-                const data = prompt("Paste the data here")
-                if (!data) return toast({ title: '❌ Invalid Data', description: 'Data is invalid, please check the data and try again' });
+              <Button
+                size='sm'
+                variant='secondary'
+                onClick={() => {
+                  const data = prompt('Paste the data here');
+                  if (!data) return toast({ title: '❌ Invalid Data', description: 'Data is invalid, please check the data and try again' });
 
-                const confirmed = confirm("Are you sure you wanna import this data ? This will overwrite your current data")
-                if (!confirmed) return toast({ title: '✅ Cancelled', description: 'Data import cancelled' });
+                  const confirmed = confirm('Are you sure you wanna import this data ? This will overwrite your current data');
+                  if (!confirmed) return toast({ title: '✅ Cancelled', description: 'Data import cancelled' });
 
-                importData(JSON.parse(data))
-              }}>
-                <FolderOutput />  Import
+                  importData(JSON.parse(data));
+                }}
+              >
+                <FolderOutput /> Import
               </Button>
 
-              <Button size="sm" variant="destructive" onClick={() => deleteData()}>
-                <Trash />  Delete All Data
+              <LoginModal />
+
+              <Button size='sm' variant='destructive' onClick={() => deleteData()}>
+                <Trash /> Delete All Data
               </Button>
             </div>
           </div>
         </DialogContent>
       </Dialog>
-    </footer >
+    </footer>
   );
 }
