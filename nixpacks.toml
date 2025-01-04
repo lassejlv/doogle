@@ -1,8 +1,0 @@
-[phases.setup]
-nixpkgsArchive = 'master'
-
-[phases.build]
-cmds = ["bun run build"]
-
-[start]
-cmd = "bunx http-serve -p 5050 ./dist"
