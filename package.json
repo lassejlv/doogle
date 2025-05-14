@@ -1,5 +1,5 @@
 {
-  "name": "doogle",
+  "name": "doogle.online",
   "scripts": {
     "dev": "bunx --bun vite --port 3000",
     "build": "vite build",
